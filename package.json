@@ -1,0 +1,8 @@
+{
+  "name": "wiki2triple",
+  "dependencies": {
+    "request": "latest",
+    "n3": "latest",
+    "yargs": "latest"
+  }
+}
