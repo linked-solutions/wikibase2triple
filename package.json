@@ -2,7 +2,7 @@
   "name": "wiki2triple",
   "dependencies": {
     "request": "latest",
-    "n3": "latest",
+    "n3": "^0.11.0",
     "yargs": "latest"
   }
 }
