@@ -46,6 +46,10 @@ function getRecent (startDate, rc) {
     var pageLog = rc || "";
     console.log("Asking for changes", startDate, pageLog);
     request(url, function (error, response, recentBody) {
+        if (error) {
+            console.error(error);
+        }
+
         var jsonBody = JSON.parse(recentBody);
         var news = jsonBody.query.recentchanges;
 
@@ -92,10 +96,7 @@ function load () {
         try {
             tripleParser.parse(turtle, function (error, triple, prefixes) {
                 if (triple) {
-                    if ((triple.subject.startsWith(WIKIBASE_URI + "/entity/Q") || triple.subject.startsWith(WIKIBASE_URI + "/entity/P")) &&
-                        !triple.predicate.startsWith(WIKIBASE_URI + "/prop/P")) {
-                            triples.push({subject: triple.subject, predicate: triple.predicate, object: triple.object});
-                    }
+                    triples.push({subject: triple.subject, predicate: triple.predicate, object: triple.object});
                 } else {
                     var tripleWriter = N3.Writer({ prefixes: prefixes });
                     for (var i = 0; i < triples.length; i++) {
@@ -144,6 +145,10 @@ function sparqlUpdate (query, callback) {
     request.post({
         url: sparqlURL,
     }, function (error, response, body) {
+        if (error) {
+            console.error(error);
+        }
+
         console.log(body);
         callback();
     });

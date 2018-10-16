@@ -25,6 +25,10 @@ In bold the mandatory.
 | `wikibaseSpecialEntity` | string  | Special:EntityData path |
 | `date`                  | date    | Start date of changes   |
 
-Example:
+If you don't set any `date` it will use the current timestamp.
 
-node wikibase2triplestore.js --sparql http://atlas.synapta.io:9990/blazegraph/namespace/leibnitiana/sparql --wikibase https://leibnitiana.synapta.io --date 20170726000000
+### Example
+
+```
+node wikibase2triplestore.js --sparql http://atlas.synapta.io:9999/blazegraph/namespace/leibnitiana/sparql --wikibase https://data.leibnitiana.eu --date 20170726000000
+```
