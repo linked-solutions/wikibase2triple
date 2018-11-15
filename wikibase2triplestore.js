@@ -24,11 +24,8 @@ function WIKIBASE_ENTITYDATA (item) { return WIKIBASE_URI + WIKIBASE_SPECIAL_ENT
 const getRecentChanges = WIKIBASE_URI + WIKIBASE_API + "?format=json&action=query&list=recentchanges&rcdir=newer" +
                        "&rcprop=title%7Cids%7Ctimestamp&rcnamespace=120%7C122&rclimit=500&rcstart=";
 const rcContinue = "&rccontinue=";
-function deleteItemLv3 (item) {
-  return "DELETE WHERE { <" + WIKIBASE_URI + "/entity/" + item + "> ?p ?o . ?o ?p2 ?o2 . ?o2 ?p3 ?o3 . }"
-}
 function deleteItemLv2 (item) {
-  return "DELETE WHERE { <" + WIKIBASE_URI + "/entity/" + item + "> ?p ?o . ?o ?p2 ?o2 . }"
+  return "DELETE WHERE { <" + WIKIBASE_URI + "/entity/" + item + "> ?p ?o . ?o ?p2 ?o2 . ?o rdf:type <http://wikiba.se/ontology-beta#Statement> . }"
 }
 function deleteItemLv1 (item) {
   return "DELETE WHERE { <" + WIKIBASE_URI + "/entity/" + item + "> ?p ?o . }"
@@ -119,17 +116,15 @@ function load () {
                             }
 
                         console.log("Loading", item);
-                        sparqlUpdate(deleteItemLv3(item), function () {
-                            sparqlUpdate(deleteItemLv2(item), function () {
-                                sparqlUpdate(deleteItemLv1(item), function () {
-                                    request(postOptions, function (error, response) {
-                                        console.log("Loaded!")
-                                        if (uniqItemsToUpdate.length > 0) {
-                                            setTimeout(function(){ load(); }, 100);
-                                        } else {
-                                            loading = false;
-                                        }
-                                    });
+                        sparqlUpdate(deleteItemLv2(item), function () {
+                            sparqlUpdate(deleteItemLv1(item), function () {
+                                request(postOptions, function (error, response) {
+                                    console.log("Loaded!")
+                                    if (uniqItemsToUpdate.length > 0) {
+                                        setTimeout(function(){ load(); }, 100);
+                                    } else {
+                                        loading = false;
+                                    }
                                 });
                             });
                         });
